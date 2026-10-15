@@ -53,7 +53,7 @@ describe("API - Autenticação de Usuário", () => {
   });
 });
 
-describe.only("API - Logout", () => {
+describe("API - Logout", () => {
   let authHeaders;
 
   beforeEach(() => {
