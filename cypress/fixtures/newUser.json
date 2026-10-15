@@ -1,0 +1,15 @@
+{
+  "first_name": "Diana",
+  "last_name": "Prince",
+  "address": {
+    "street": "Street 1",
+    "house_number": "19",
+    "city": "Themyscira",
+    "state": "Paradise Island",
+    "country": "Country",
+    "postal_code": "02145889"
+  },
+  "phone": "0987654321",
+  "dob": "1990-01-01",
+  "password": "WonderWoman123!"
+}
