@@ -13,8 +13,12 @@ describe("API - Registro de usuário", () => {
           },
           failOnStatusCode: false,
         }).then((response) => {
-          const { status } = response;
+          const { status, body } = response;
           expect(status).to.eq(422);
+          expect(body).to.have.property("email");
+          expect(body.email).to.include(
+            "A customer with this email address already exists.",
+          );
         });
       });
     });
