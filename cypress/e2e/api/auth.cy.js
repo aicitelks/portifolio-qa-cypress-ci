@@ -50,3 +50,62 @@ describe("API - Autenticação de Usuário", () => {
     });
   });
 });
+
+describe.only("API - Logout", () => {
+  let authHeaders;
+
+  beforeEach(() => {
+    const apiUrl = Cypress.expose("apiUrl");
+
+    cy.env(["userEmail3", "userPassword3"]).then(
+      ({ userEmail3, userPassword3 }) => {
+        cy.request({
+          method: "POST",
+          url: `${apiUrl}/users/login`,
+          body: { email: userEmail3, password: userPassword3 },
+          log: false,
+        }).then((response) => {
+          const { body } = response;
+          authHeaders = { Authorization: `Bearer ${body.access_token}` };
+        });
+      },
+    );
+  });
+
+  it("faz logout com um usuário autenticado", () => {
+    const apiUrl = Cypress.expose("apiUrl");
+
+    cy.request({
+      method: "GET",
+      url: `${apiUrl}/users/logout`,
+      headers: authHeaders,
+      log: false,
+    }).then((response) => {
+      const { status, body } = response;
+      expect(status).to.eq(200);
+      expect(body.message).to.eq("Successfully logged out");
+    });
+  });
+
+  it("invalida o token após o logout", () => {
+    const apiUrl = Cypress.expose("apiUrl");
+
+    cy.request({
+      method: "GET",
+      url: `${apiUrl}/users/logout`,
+      headers: authHeaders,
+      log: false,
+    }).then(() => {
+      cy.request({
+        method: "GET",
+        url: `${apiUrl}/users/me`,
+        headers: authHeaders,
+        failOnStatusCode: false,
+        log: false,
+      }).then((response) => {
+        const { status } = response;
+        expect(status).to.eq(401);
+      });
+    });
+  });
+});
