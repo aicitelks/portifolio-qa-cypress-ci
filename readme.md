@@ -1,8 +1,8 @@
-# Portfólio QA Cypress CI
+# 🧪 Portfólio QA Cypress CI
 
-Este projeto contém automações de testes com Cypress focadas em cenários de API, utilizando a API de demonstração [Practice Software Testing](https://practicesoftwaretesting.com).
+Este projeto de portifólio contém automações de testes com Cypress focadas em cenários de API, utilizando a API de demonstração [Practice Software Testing](https://practicesoftwaretesting.com).
 
-## Objetivo
+## 🎯 Objetivo
 
 Validar fluxos críticos de autenticação e cadastro de usuários por meio de testes automatizados, com foco em:
 
@@ -11,13 +11,13 @@ Validar fluxos críticos de autenticação e cadastro de usuários por meio de t
 - logout e invalidação de token
 - tentativa de cadastro com e-mail já existente
 
-## Stack
+## ⚙️ Stack
 
 - Node.js
 - npm
 - Cypress 16
 
-## Estrutura do projeto
+## 📁 Estrutura do projeto
 
 ```text
 .
@@ -40,7 +40,7 @@ Validar fluxos críticos de autenticação e cadastro de usuários por meio de t
 └── package-lock.json
 ```
 
-## Pré-requisitos
+## ✅ Pré-requisitos
 
 Antes de iniciar, verifique se você possui instalado:
 
@@ -48,7 +48,7 @@ Antes de iniciar, verifique se você possui instalado:
 - npm
 - navegador Chromium/Chrome disponível para execução local do Cypress
 
-## Instalação
+## 📦 Instalação
 
 1. Clone o projeto
 2. Acesse a pasta do repositório
@@ -58,7 +58,7 @@ Antes de iniciar, verifique se você possui instalado:
 npm install
 ```
 
-## Configuração de ambiente
+## 🔐 Configuração de ambiente
 
 O projeto utiliza credenciais em `cypress.env.json` para autenticar os testes.
 
@@ -81,23 +81,25 @@ cp cypress.env.example.json cypress.env.json
 }
 ```
 
+Os **usuários exemplos** listados na documentação oficial [estão aqui](https://testsmith-io.github.io/practice-software-testing/#/).
+
 > O arquivo `cypress.env.example.json` contém a estrutura esperada dos dados de ambiente.
 
-## Executando os testes
+## 🚀 Executando os testes
 
-### Abrir a interface do Cypress
+### 🖥️ Abrir a interface do Cypress
 
 ```bash
 npm run cy:open
 ```
 
-### Executar os testes em modo headless
+### 🧪 Executar os testes em modo headless
 
 ```bash
 npm run cy:run
 ```
 
-### Executar um arquivo específico
+### 📌 Executar um arquivo específico
 
 ```bash
 npx cypress run --spec "cypress/e2e/api/auth.cy.js"
@@ -107,7 +109,7 @@ npx cypress run --spec "cypress/e2e/api/auth.cy.js"
 npx cypress run --spec "cypress/e2e/api/register.cy.js"
 ```
 
-## Configuração do Cypress
+## ⚙️ Configuração do Cypress
 
 O arquivo `cypress.config.js` define:
 
@@ -116,19 +118,13 @@ O arquivo `cypress.config.js` define:
 - política de retry em execução
 - URLs base da API expostas para uso nos testes
 
-## Observações
+## 📝 Observações
 
 - Os testes atuais estão concentrados em cenários de API.
 - A URL base configurada no projeto aponta para a API pública do Practice Software Testing.
 - Caso o ambiente da API mude, revise o arquivo `cypress.config.js` e o conteúdo de `cypress.env.json`.
 
-## Como contribuir
+## 🔜 Próximos passos
 
-1. Crie uma branch para a sua alteração
-2. Implemente novos testes ou ajustes
-3. Execute os testes localmente
-4. Abra um pull request com a descrição da mudança
-
-## Licença
-
-Este projeto está sob a licença ISC.
+- [ ] implementar validações web
+- [ ] criar documentação
