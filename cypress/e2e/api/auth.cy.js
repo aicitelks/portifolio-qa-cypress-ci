@@ -13,7 +13,7 @@ describe("API - Autenticação de Usuário", () => {
           const { status, body } = response;
           expect(status).to.eq(200);
           expect(body).to.have.property("access_token");
-          expect(body.token_type).to.eq("Bearer");
+          expect(body.token_type).to.eq("bearer");
           expect(body.expires_in).to.be.a("number");
 
           cy.request({
