@@ -30,4 +30,23 @@ describe("API - Autenticação de Usuário", () => {
       },
     );
   });
+
+  it("não permite login com credenciais inválidas", () => {
+    const apiUrl = Cypress.expose("apiUrl");
+
+    cy.env(["userEmail2"]).then(({ userEmail2 }) => {
+      cy.request({
+        method: "POST",
+        url: `${apiUrl}/users/login`,
+        body: { email: userEmail2, password: "wrongpassword" },
+        failOnStatusCode: false,
+        log: false,
+      }).then((response) => {
+        const { status, body } = response;
+        expect(status).to.eq(401);
+        expect(body).to.have.property("error");
+        expect(body.error).to.include("Unauthorized");
+      });
+    });
+  });
 });
