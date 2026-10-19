@@ -1,0 +1,37 @@
+name: Cypress
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Rodar testes Cypress
+        uses: cypress-io/github-action@v7
+        env:
+          CYPRESS_userEmailAdmin: ${{ secrets.USER_EMAIL_ADMIN }}
+          CYPRESS_userPasswordAdmin: ${{ secrets.USER_PASSWORD_ADMIN }}
+          CYPRESS_userEmail: ${{ secrets.USER_EMAIL }}
+          CYPRESS_userPassword: ${{ secrets.USER_PASSWORD }}
+          CYPRESS_userEmail2: ${{ secrets.USER_EMAIL_2 }}
+          CYPRESS_userPassword2: ${{ secrets.USER_PASSWORD_2 }}
+          CYPRESS_userEmail3: ${{ secrets.USER_EMAIL_3 }}
+          CYPRESS_userPassword3: ${{ secrets.USER_PASSWORD_3 }}
+
+      - name: Salvar screenshots em caso de falha
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+          if-no-files-found: ignore
