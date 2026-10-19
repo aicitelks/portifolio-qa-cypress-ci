@@ -150,7 +150,7 @@
     "tweetnacl": "^0.14.5",
     "type-fest": "^0.8.1",
     "universalify": "^2.0.1",
-    "untildify": "^4.0.0",
+    "untildify": "^6.0.0",
     "verror": "^1.10.0",
     "which": "^2.0.2",
     "wrap-ansi": "^9.0.2",
