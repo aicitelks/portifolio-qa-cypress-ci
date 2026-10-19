@@ -1,0 +1,13 @@
+# O Dependabot é uma ferramenta nativa e gratuita do GitHub que automatiza o gerenciamento de dependências de um projeto. Ele funciona monitorando continuamente os arquivos de manifesto (como package.json, requirements.txt, pom.xml, etc.) para garantir que as bibliotecas e pacotes externos que o seu sistema usa estejam seguros e atualizados.
+
+# Este bot cria uma nova branch no seu repositório, atualiza o arquivo de dependências e abre um Pull Request
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
