@@ -4,3 +4,4 @@ cypress/screenshots/
 cypress/reports/
 cypress.env.json
 api-docs.json
+.github/.dependabot.yml
