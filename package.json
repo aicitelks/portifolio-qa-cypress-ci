@@ -84,7 +84,7 @@
     "is-fullwidth-code-point": "^5.1.0",
     "is-installed-globally": "^0.4.0",
     "is-path-inside": "^3.0.3",
-    "is-stream": "^2.0.1",
+    "is-stream": "^4.0.1",
     "is-typedarray": "^1.0.0",
     "is-unicode-supported": "^0.1.0",
     "isexe": "^2.0.0",
