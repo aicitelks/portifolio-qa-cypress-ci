@@ -47,7 +47,7 @@
     "delayed-stream": "^1.0.0",
     "dunder-proto": "^1.0.1",
     "ecc-jsbn": "^0.1.2",
-    "emoji-regex": "^8.0.0",
+    "emoji-regex": "^11.0.0",
     "end-of-stream": "^1.4.5",
     "environment": "^1.1.0",
     "es-define-property": "^1.0.1",
