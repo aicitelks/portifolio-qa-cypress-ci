@@ -128,3 +128,15 @@ O arquivo `cypress.config.js` define:
 
 - [ ] implementar validações web
 - [ ] criar documentação
+- [ ] adicionar pipeline sCI/CD
+
+<div align="center">
+
+---
+
+Desenvolvido com 💚 e foco em qualidade por **Le Castro** 👩‍💻✨
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/leticiacastro87)
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/aicitelks)
+
+</div>
