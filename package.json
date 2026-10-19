@@ -138,7 +138,7 @@
     "string-width": "^4.2.3",
     "strip-ansi": "^7.2.0",
     "strip-final-newline": "^2.0.0",
-    "supports-color": "^8.1.1",
+    "supports-color": "^11.0.0",
     "systeminformation": "^5.33.15",
     "throttleit": "^1.0.1",
     "tldts": "^6.1.86",
