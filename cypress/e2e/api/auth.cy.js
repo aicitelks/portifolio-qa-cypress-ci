@@ -38,11 +38,11 @@ describe("API - Autenticação de Usuário", () => {
   it("não permite login com credenciais inválidas", () => {
     const apiUrl = Cypress.expose("apiUrl");
 
-    cy.env(["userEmail2"]).then(({ userEmail2 }) => {
+    cy.env(["userEmail"]).then(({ userEmail }) => {
       cy.request({
         method: "POST",
         url: `${apiUrl}/users/login`,
-        body: { email: userEmail2, password: "wrongpassword" },
+        body: { email: userEmail, password: "wrongpassword" },
         failOnStatusCode: false,
         log: false,
       }).then((response) => {
@@ -59,21 +59,10 @@ describe("API - Logout", () => {
   let authHeaders;
 
   beforeEach(() => {
-    const apiUrl = Cypress.expose("apiUrl");
-
-    cy.env(["userEmail3", "userPassword3"]).then(
-      ({ userEmail3, userPassword3 }) => {
-        cy.request({
-          method: "POST",
-          url: `${apiUrl}/users/login`,
-          body: { email: userEmail3, password: userPassword3 },
-          log: false,
-        }).then((response) => {
-          const { body } = response;
-          authHeaders = { Authorization: `Bearer ${body.access_token}` };
-        });
-      },
-    );
+    // Comando personalizado para fazer login e obter os cabeçalhos de autorização
+    cy.apiLogin("userEmail3", "userPassword3").then((headers) => {
+      authHeaders = headers;
+    });
   });
 
   it("faz logout com um usuário autenticado", () => {
