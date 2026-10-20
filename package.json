@@ -160,7 +160,9 @@
   },
   "scripts": {
     "cy:open": "cypress open",
-    "cy:run": "cypress run"
+    "cy:run": "cypress run",
+    "test:api": "cypress run --spec \"cypress/e2e/api/**\"",
+    "test:web": "cypress run --spec \"cypress/e2e/web/**\""
   },
   "keywords": [],
   "author": "",

@@ -120,6 +120,7 @@ O workflow `.github/workflows/cypress.yml` roda a suíte completa a cada push na
 - 🧩 **Page Object:** `LoginPage` e `HomePage` isolam os seletores.
 - 🧹 **Dados de teste sem poluição:** os testes usam as contas demo já existentes. O teste de e-mail duplicado reaproveita o e-mail de uma conta existente, então nenhum usuário novo é criado a cada execução.
 - 📦 **Fixtures:** dados fixos (corpo de registro) ficam em `cypress/fixtures`. O e-mail vem das credenciais.
+- 🧩 **Page Object e custom command:** LoginPage e HomePage isolam os seletores. O cy.apiLogin() centraliza o login por API nos testes em que ele é só pré-requisito. Nos testes do próprio login a chamada fica explícita.
 
 ## 🔎 Achados: divergências entre documentação e API
 
