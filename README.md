@@ -128,6 +128,8 @@ Ao comparar o contrato [Toolshop API](https://api.practicesoftwaretesting.com/ap
 
 ## 🗺️ Próximos passos
 
+- ✂️ GitHub Actions: separar os testes de API e os de web em jobs diferentes no workflow
+- 🏗️ Rodar a aplicação com Docker no CI para eliminar a dependência do site público e corrigir o erro `403 Forbbiden`
 - 📊 Relatório de resultados dos testes publicado no GitHub Pages
 - 🏷️ Tags `@smoke` e `@regression` para executar subconjuntos
 - 🛍️ Cenários de busca, carrinho e checkout, com login reaproveitado via `cy.session()`
