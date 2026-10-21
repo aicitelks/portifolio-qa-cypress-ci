@@ -1,6 +1,6 @@
 # 🧪 Portfólio QA: Automação com Cypress (API + Web)
 
-![Cypress](https://github.com/aicitelks/portifolio-qa-cypress-ci/actions/workflows/cypress.yml/badge.svg)
+![Cypress](https://github.com/aicitelks/portifolio-qa-cypress-ci/actions/workflows/cypress.yml/badge.svg) - Camada API
 
 Suíte de testes automatizados com **Cypress 16** cobrindo as camadas de **API** e **Web** do [Toolshop](https://practicesoftwaretesting.com), uma aplicação criada para treino de testes de software. O projeto roda em **CI com GitHub Actions** a cada push e foi construído simulando o jeito de trabalhar de um time real: separação entre camadas, Page Objects, credenciais em secrets e documentação de achados.
 
@@ -22,7 +22,11 @@ Suíte de testes automatizados com **Cypress 16** cobrindo as camadas de **API**
 | Token invalidado após o logout             | `GET /users/me`                      | 401                                                                      |
 | Registro com e-mail já cadastrado          | `POST /users/register`               | 422 com erro no campo `email`                                            |
 
+![Run finished](/docs/api-run.png)
+
 ### 🖥️ Web
+
+> Estes cenários são executados localmente (`npm run test:web`); veja [a decisão](#️-decisão-testes-web-fora-do-ci).
 
 | 📝 Cenário              | 🎯 Resultado esperado                         |
 | ----------------------- | --------------------------------------------- |
@@ -31,7 +35,7 @@ Suíte de testes automatizados com **Cypress 16** cobrindo as camadas de **API**
 | Lista de produtos       | Produtos exibidos com nome e preço            |
 | Detalhe do produto      | Clique em um produto abre a página de detalhe |
 
-![Run finished](/docs/run-specs.png)
+![Run finished](/docs/web-run.png)
 
 ## 🛠️ Stack
 
@@ -105,7 +109,7 @@ A URL da API não é segredo e fica em `cypress.config.js`, no bloco `expose`.
 
 ## 🚀 CI/CD
 
-O workflow `.github/workflows/cypress.yml` roda a suíte completa a cada push na `main`, em pull requests e manualmente (`workflow_dispatch`).
+O workflow `.github/workflows/cypress.yml` roda os **testes de API** a cada push na `main`, em pull requests e manualmente (`workflow_dispatch`). Os testes web rodam localmente (veja [a decisão abaixo](#️-decisão-testes-web-fora-do-ci)). O badge no topo reflete, portanto, a execução da camada de API.
 
 - 🔐 **Credenciais:** um secret do GitHub por valor, entregue ao Cypress como variável de ambiente com prefixo `CYPRESS_` (por exemplo, o secret `USER_EMAIL` vira `CYPRESS_userEmail`). Evitei guardar um JSON inteiro como secret, pois a documentação do GitHub desaconselha dados estruturados nessa função.
 - 🛡️ **Permissões mínimas:** `permissions: contents: read`.
@@ -122,6 +126,18 @@ O workflow `.github/workflows/cypress.yml` roda a suíte completa a cada push na
 - 📦 **Fixtures:** dados fixos (corpo de registro) ficam em `cypress/fixtures`. O e-mail vem das credenciais.
 - 🧩 **Page Object e custom command:** LoginPage e HomePage isolam os seletores. O cy.apiLogin() centraliza o login por API nos testes em que ele é só pré-requisito. Nos testes do próprio login a chamada fica explícita.
 
+## ⚖️ Decisão: testes web fora do CI
+
+Os testes web passam localmente, mas não rodam no pipeline. O caminho até essa decisão:
+
+1. **Primeira tentativa: testar o site público a partir do CI.** O `cy.visit()` recebeu **403 Forbidden** quando a requisição saiu dos servidores do GitHub Actions. Os testes de API, que usam outro endereço (`api.practicesoftwaretesting.com`), continuaram passando. A causa provável é algum filtro de tráfego automatizado no site, mas não consegui confirmar isso.
+2. **Segunda tentativa: subir o Toolshop com Docker dentro do próprio pipeline**, para não depender do site público. O ambiente foi construído e o banco foi populado, porém o endpoint de login respondeu **500** nesse ambiente recém-criado, o que derrubou os testes que dependem de autenticação. Não aprofundei a causa.
+3. **Decisão:** manter no CI apenas a camada de API, contra a API pública, e executar os testes web localmente com `npm run test:web`.
+
+**Por quê:** prefiro um pipeline pequeno e confiável a um pipeline com falhas conhecidas ou mascaradas com repetições. Para um projeto de portfólio, o custo de manter e depurar um ambiente completo em contêineres não compensou naquele momento.
+
+**Como retomar:** investigar o erro 500 do login no ambiente em contêineres (logs do Laravel e configuração inicial) e então reativar os testes web no pipeline.
+
 ## 🔎 Achados: divergências entre documentação e API
 
 Ao comparar o contrato [Toolshop API](https://api.practicesoftwaretesting.com/api/documentation) com o comportamento real, encontrei divergências que foram mapeadas nas [Issues](https://github.com/aicitelks/portifolio-qa-cypress-ci/issues) do repositório.
@@ -134,6 +150,7 @@ Ao comparar o contrato [Toolshop API](https://api.practicesoftwaretesting.com/ap
 - 🏷️ Tags `@smoke` e `@regression` para executar subconjuntos
 - 🛍️ Cenários de busca, carrinho e checkout, com login reaproveitado via `cy.session()`
 - 🤖 Dependabot para manter dependências e actions atualizadas
+- 🐳 Rodar os testes web no CI subindo o Toolshop com Docker (investigar o erro 500 no login do ambiente em contêineres)
 
 ---
 
