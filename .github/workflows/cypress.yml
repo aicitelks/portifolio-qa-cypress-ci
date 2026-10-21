@@ -31,8 +31,21 @@ jobs:
       - name: Subir o Toolshop e popular o banco
         working-directory: toolshop
         run: |
-          docker compose up -d
-          docker compose exec -T laravel-api php artisan migrate:refresh --seed
+          ok=0
+          for i in 1 2 3; do
+            if docker compose up -d; then ok=1; break; fi
+            echo "Tentativa $i falhou. Aguardando para tentar de novo..."
+            sleep 20
+          done
+          [ "$ok" = 1 ] || exit 1
+
+          ok=0
+          for i in $(seq 1 30); do
+            if docker compose exec -T laravel-api php artisan migrate:refresh --seed; then ok=1; break; fi
+            echo "API ainda não está pronta ($i/30). Aguardando..."
+            sleep 10
+          done
+          [ "$ok" = 1 ] || exit 1
 
       - name: Rodar testes Cypress
         uses: cypress-io/github-action@v7
