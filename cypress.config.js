@@ -2,7 +2,7 @@ const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
   e2e: {
-    baseUrl: "https://practicesoftwaretesting.com",
+    baseUrl: process.env.BASE_URL || "https://practicesoftwaretesting.com",
     viewportWidth: 1280,
     viewportHeight: 720,
     defaultCommandTimeout: 8000,
@@ -12,7 +12,6 @@ module.exports = defineConfig({
     },
   },
   expose: {
-    apiUrl: "https://api.practicesoftwaretesting.com",
-    apiUrlWithBugs: "https://api-with-bugs.practicesoftwaretesting.com",
+    apiUrl: process.env.API_URL || "https://api.practicesoftwaretesting.com",
   },
 });

@@ -16,14 +16,33 @@ concurrency:
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
     steps:
       - name: Checkout
         uses: actions/checkout@v7
 
+      - name: Baixar o Toolshop
+        uses: actions/checkout@v7
+        with:
+          repository: testsmith-io/practice-software-testing
+          # evita que o código do Toolshop se misture com o seu projeto
+          path: toolshop
+
+      - name: Subir o Toolshop e popular o banco
+        working-directory: toolshop
+        run: |
+          docker compose up -d
+          docker compose exec -T laravel-api php artisan migrate:refresh --seed
+
       - name: Rodar testes Cypress
         uses: cypress-io/github-action@v7
+        with:
+          # faz o pipeline aguardar as duas URLs responderem antes de iniciar os testes
+          wait-on: "http://localhost:4200, http://localhost:8091/status"
+          wait-on-timeout: 180
         env:
+          BASE_URL: http://localhost:4200
+          API_URL: http://localhost:8091
           CYPRESS_userEmailAdmin: ${{ secrets.USER_EMAIL_ADMIN }}
           CYPRESS_userPasswordAdmin: ${{ secrets.USER_PASSWORD_ADMIN }}
           CYPRESS_userEmail: ${{ secrets.USER_EMAIL }}
