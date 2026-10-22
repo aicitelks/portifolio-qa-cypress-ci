@@ -26,7 +26,7 @@ describe("API - Autenticação de Usuário", () => {
           }).then((profileResponse) => {
             const { status: profileStatus, body: profile } = profileResponse;
             expect(profileStatus).to.eq(200);
-            expect(profile.email).to.eq(userEmail);
+            expect(profile.email).to.eq(userEmailAdmin);
             expect(profile).to.have.property("id");
             expect(profile).to.not.have.property("password");
           });
