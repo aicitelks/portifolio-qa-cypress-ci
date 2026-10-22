@@ -135,7 +135,7 @@ Os testes web passam localmente, mas não rodam no pipeline. O caminho até essa
 
 ## 🔎 Achados: divergências entre documentação e API
 
-Ao comparar o contrato [Toolshop API](https://api.practicesoftwaretesting.com/api/documentation) com o comportamento real, encontrei divergências que foram mapeadas nas [Issues](https://github.com/aicitelks/portifolio-qa-cypress-ci/issues) do repositório. Um exemplo: o registro com e-mail duplicado está documentado como `409`, mas a API devolve `422`.
+Ao comparar o contrato [Toolshop API](https://api.practicesoftwaretesting.com/api/documentation) com o comportamento real, encontrei divergências que foram mapeadas nas [Issues](https://github.com/aicitelks/portifolio-qa-cypress-ci/issues?q=is%3Aissue+state%3Aclosed) do repositório. Um exemplo: o registro com e-mail duplicado está documentado como `409`, mas a API devolve `422`.
 
 ## 🗺️ Próximos passos
 
