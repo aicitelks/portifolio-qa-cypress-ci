@@ -2,12 +2,12 @@ describe("API - Autenticação de Usuário", () => {
   it("faz login com um usuário comum e acessa o próprio perfil", () => {
     const apiUrl = Cypress.expose("apiUrl");
 
-    cy.env(["userEmail", "userPassword"]).then(
-      ({ userEmail, userPassword }) => {
+    cy.env(["userEmailAdmin", "userPasswordAdmin"]).then(
+      ({ userEmailAdmin, userPasswordAdmin }) => {
         cy.request({
           method: "POST",
           url: `${apiUrl}/users/login`,
-          body: { email: userEmail, password: userPassword },
+          body: { email: userEmailAdmin, password: userPasswordAdmin },
           log: false,
         }).then((response) => {
           const { status, body } = response;
