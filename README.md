@@ -1,8 +1,8 @@
 # 🧪 Portfólio QA: Automação com Cypress (API + Web)
 
-![Cypress](https://github.com/aicitelks/portifolio-qa-cypress-ci/actions/workflows/cypress.yml/badge.svg) - Camada API
+[![CI: testes de API](https://github.com/aicitelks/portifolio-qa-cypress-ci/actions/workflows/cypress.yml/badge.svg)](https://github.com/aicitelks/portifolio-qa-cypress-ci/actions/workflows/cypress.yml)
 
-Suíte de testes automatizados com **Cypress 16** cobrindo as camadas de **API** e **Web** do [Toolshop](https://practicesoftwaretesting.com), uma aplicação criada para treino de testes de software. O projeto roda em **CI com GitHub Actions** a cada push e foi construído simulando o jeito de trabalhar de um time real: separação entre camadas, Page Objects, credenciais em secrets e documentação de achados.
+Suíte de testes automatizados com **Cypress 16** cobrindo as camadas de **API** e **Web** do [Toolshop](https://practicesoftwaretesting.com), uma aplicação criada para treino de testes de software. Os testes de **API rodam em CI com GitHub Actions** a cada push; os testes **web rodam localmente** (veja [a decisão](#-decisão-testes-web-fora-do-ci)). O projeto foi construído simulando o jeito de trabalhar de um time real: separação entre camadas, Page Objects, credenciais em secrets e documentação de achados.
 
 ## 🎯 Sobre o projeto
 
@@ -22,11 +22,11 @@ Suíte de testes automatizados com **Cypress 16** cobrindo as camadas de **API**
 | Token invalidado após o logout             | `GET /users/me`                      | 401                                                                      |
 | Registro com e-mail já cadastrado          | `POST /users/register`               | 422 com erro no campo `email`                                            |
 
-![Run finished](/docs/api-run.png)
+![Execução dos testes de API](docs/api-run.png)
 
 ### 🖥️ Web
 
-> Estes cenários são executados localmente (`npm run test:web`); veja [a decisão](#️-decisão-testes-web-fora-do-ci).
+> Estes cenários são executados localmente (`npm run test:web`); veja [a decisão](#-decisão-testes-web-fora-do-ci).
 
 | 📝 Cenário              | 🎯 Resultado esperado                         |
 | ----------------------- | --------------------------------------------- |
@@ -35,7 +35,7 @@ Suíte de testes automatizados com **Cypress 16** cobrindo as camadas de **API**
 | Lista de produtos       | Produtos exibidos com nome e preço            |
 | Detalhe do produto      | Clique em um produto abre a página de detalhe |
 
-![Run finished](/docs/web-run.png)
+![Execução dos testes web (local)](docs/web-run.png)
 
 ## 🛠️ Stack
 
@@ -48,13 +48,15 @@ Suíte de testes automatizados com **Cypress 16** cobrindo as camadas de **API**
 
 ```
 .
-├── .github/workflows/cypress.yml   # pipeline de CI
+├── .github/workflows/cypress.yml   # pipeline de CI (testes de API)
 ├── cypress/
 │   ├── e2e/
 │   │   ├── api/                    # testes de API
 │   │   └── web/                    # testes de interface
 │   ├── fixtures/                   # dados fixos de teste
 │   ├── pages/                      # Page Objects (LoginPage, HomePage)
+│   └── support/                    # custom commands (cy.apiLogin) e setup
+├── docs/                           # evidências (prints das execuções)
 ├── .gitignore
 ├── cypress.config.js
 ├── cypress.env.example.json        # modelo das credenciais
@@ -65,7 +67,7 @@ Suíte de testes automatizados com **Cypress 16** cobrindo as camadas de **API**
 
 ## ▶️ Como rodar
 
-**Pré-requisitos:** Node.js 18 ou superior e Git.
+**Pré-requisitos:** Node.js (desenvolvido e testado com a versão 24) e Git.
 
 ```bash
 # 1. Clonar e instalar
@@ -75,7 +77,7 @@ npm install
 
 # 2. Criar o arquivo de credenciais (não é versionado)
 cp cypress.env.example.json cypress.env.json
-# preencha com as contas demo listadas no README do Toolshop
+# preencha com as contas demo (veja abaixo)
 
 # 3. Executar
 npm run test:api      # só testes de API
@@ -84,13 +86,7 @@ npm run cy:run        # todos, em modo headless
 npm run cy:open       # modo interativo
 ```
 
-Preencha os valores do arquivo `cypress.env.json` com e-mails e senhas válidos para o ambiente de testes.
-
-- **Users demos** listados na documentação oficial [estão aqui](https://testsmith-io.github.io/practice-software-testing/#/).
-
-> O arquivo `cypress.env.example.json` contém a estrutura esperada dos dados de ambiente.
-
-Modelo do `cypress.env.json`:
+Preencha o `cypress.env.json` com e-mails e senhas válidos para o ambiente de testes. As **contas demo** estão listadas na [documentação oficial do Toolshop](https://testsmith-io.github.io/practice-software-testing/#/). O arquivo `cypress.env.example.json` traz a estrutura esperada:
 
 ```json
 {
@@ -109,7 +105,7 @@ A URL da API não é segredo e fica em `cypress.config.js`, no bloco `expose`.
 
 ## 🚀 CI/CD
 
-O workflow `.github/workflows/cypress.yml` roda os **testes de API** a cada push na `main`, em pull requests e manualmente (`workflow_dispatch`). Os testes web rodam localmente (veja [a decisão abaixo](#️-decisão-testes-web-fora-do-ci)). O badge no topo reflete, portanto, a execução da camada de API.
+O workflow `.github/workflows/cypress.yml` roda os **testes de API** a cada push na `main`, em pull requests e manualmente (`workflow_dispatch`). Os testes web rodam localmente (veja [a decisão abaixo](#-decisão-testes-web-fora-do-ci)). O **badge** no topo reflete, portanto, a **execução da camada de API**.
 
 - 🔐 **Credenciais:** um secret do GitHub por valor, entregue ao Cypress como variável de ambiente com prefixo `CYPRESS_` (por exemplo, o secret `USER_EMAIL` vira `CYPRESS_userEmail`). Evitei guardar um JSON inteiro como secret, pois a documentação do GitHub desaconselha dados estruturados nessa função.
 - 🛡️ **Permissões mínimas:** `permissions: contents: read`.
@@ -121,12 +117,11 @@ O workflow `.github/workflows/cypress.yml` roda os **testes de API** a cada push
 - 🌲 **Cypress 16:** o `Cypress.env()` foi removido. Valores públicos (URL da API) usam `Cypress.expose()` e valores sensíveis (credenciais) usam `cy.env()`, com `log: false` nas requisições que carregam senha ou token.
 - 🧱 **Separação entre camadas:** testes de API validam o contrato (status e corpo). Testes web validam o que o usuário vê. Na interface, `cy.intercept` é usado apenas para sincronizar, nunca para repetir asserções de API.
 - 🎯 **Seletores `data-test`:** a aplicação expõe atributos de teste. Evitei classes CSS genéricas. O seletor usado restringe a cards reais.
-- 🧩 **Page Object:** `LoginPage` e `HomePage` isolam os seletores.
+- 🧩 **Page Object e custom command:** `LoginPage` e `HomePage` isolam os seletores. O `cy.apiLogin()` centraliza o login por API nos testes em que ele é só pré-requisito. Nos testes do próprio login, a chamada fica explícita.
 - 🧹 **Dados de teste sem poluição:** os testes usam as contas demo já existentes. O teste de e-mail duplicado reaproveita o e-mail de uma conta existente, então nenhum usuário novo é criado a cada execução.
 - 📦 **Fixtures:** dados fixos (corpo de registro) ficam em `cypress/fixtures`. O e-mail vem das credenciais.
-- 🧩 **Page Object e custom command:** LoginPage e HomePage isolam os seletores. O cy.apiLogin() centraliza o login por API nos testes em que ele é só pré-requisito. Nos testes do próprio login a chamada fica explícita.
 
-## ⚖️ Decisão: testes web fora do CI
+## 🚧 Decisão: testes web fora do CI
 
 Os testes web passam localmente, mas não rodam no pipeline. O caminho até essa decisão:
 
@@ -134,23 +129,21 @@ Os testes web passam localmente, mas não rodam no pipeline. O caminho até essa
 2. **Segunda tentativa: subir o Toolshop com Docker dentro do próprio pipeline**, para não depender do site público. O ambiente foi construído e o banco foi populado, porém o endpoint de login respondeu **500** nesse ambiente recém-criado, o que derrubou os testes que dependem de autenticação. Não aprofundei a causa.
 3. **Decisão:** manter no CI apenas a camada de API, contra a API pública, e executar os testes web localmente com `npm run test:web`.
 
-**Por quê:** prefiro um pipeline pequeno e confiável a um pipeline com falhas conhecidas ou mascaradas com repetições. Para um projeto de portfólio, o custo de manter e depurar um ambiente completo em contêineres não compensou naquele momento.
+**Por quê:** prefiro um pipeline pequeno e confiável a um pipeline com falhas conhecidas. Para um projeto de portfólio, o custo de manter e depurar um ambiente completo em contêineres não compensou naquele momento.
 
 **Como retomar:** investigar o erro 500 do login no ambiente em contêineres (logs do Laravel e configuração inicial) e então reativar os testes web no pipeline.
 
 ## 🔎 Achados: divergências entre documentação e API
 
-Ao comparar o contrato [Toolshop API](https://api.practicesoftwaretesting.com/api/documentation) com o comportamento real, encontrei divergências que foram mapeadas nas [Issues](https://github.com/aicitelks/portifolio-qa-cypress-ci/issues) do repositório.
+Ao comparar o contrato [Toolshop API](https://api.practicesoftwaretesting.com/api/documentation) com o comportamento real, encontrei divergências que foram mapeadas nas [Issues](https://github.com/aicitelks/portifolio-qa-cypress-ci/issues) do repositório. Um exemplo: o registro com e-mail duplicado está documentado como `409`, mas a API devolve `422`.
 
 ## 🗺️ Próximos passos
 
-- ✂️ GitHub Actions: separar os testes de API e os de web em jobs diferentes no workflow
-- 🏗️ Rodar a aplicação com Docker no CI para eliminar a dependência do site público e corrigir o erro `403 Forbbiden`
+- 🐳 Rodar os testes web no CI subindo o Toolshop com Docker: investigar o erro 500 no login do ambiente em contêineres (o site público devolve 403 ao CI) e, então, separar API e web em jobs distintos no workflow
 - 📊 Relatório de resultados dos testes publicado no GitHub Pages
 - 🏷️ Tags `@smoke` e `@regression` para executar subconjuntos
 - 🛍️ Cenários de busca, carrinho e checkout, com login reaproveitado via `cy.session()`
 - 🤖 Dependabot para manter dependências e actions atualizadas
-- 🐳 Rodar os testes web no CI subindo o Toolshop com Docker (investigar o erro 500 no login do ambiente em contêineres)
 
 ---
 
